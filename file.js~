@@ -15,7 +15,6 @@ File.prototype = {
         for(var i=0;i<f.length;i++){
 	    if(f[i].type.match(image)){
                 check = true;
-		this.add_file(f[i]);
 		//alert('ok');
             }else{
                 check = false;
@@ -26,41 +25,6 @@ File.prototype = {
         if(!check){
 	    alert('image only!');
         }
-    },
-    add_file:function(f){
-        var thum = document.createElement('div');
-        thum.className = 'image_thum';
-        $('#thum').append(thum);
-        var img = new Image();
-        img.className = f.name;
-	img.style.margin = '10px';
-	//alert(img.className);
-        thum.appendChild(img);
-	this.file_read(f,function(c){
-		img.src = c;
-	    });
-
-    },
-    file_read:function(f,callback){
-        var r = new FileReader();
-
-        r.onload = function(e){
-	    if(callback){
-		callback(r.result);
-            }
-	}
-
-        r.onerror = function(){
-	    switch(r.error.code){
-	     case FileError.NOT_FOUND_ERR:
-	       alert('missing file');
-	       break;
-             case FileError.NOT_READABLE_ERR:
-	       alert('can not read');
-               break;
-            }
-	}
-        r.readAsDataURL(f);
     }
     
     
