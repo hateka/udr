@@ -34,12 +34,12 @@ File.prototype = {
         var img = new Image();
         img.className = f.name;
 	img.style.margin = '10px';
-	//alert(img.className);
         thum.appendChild(img);
+        var p = new Hand();
+        p.event(thum);
 	this.file_read(f,function(c){
 		img.src = c;
 	    });
-
     },
     file_read:function(f,callback){
         var r = new FileReader();
@@ -63,13 +63,23 @@ File.prototype = {
         r.readAsDataURL(f);
     }
     
-    
-    
+};
+
+var Hand = function(){};
+
+Hand.prototype = {
+    event:function(f){
+	//alert(f.style.top);
+	f.addEventListener('mousedown',this.drag,false);
+    },
+    drag:function(e){
+	alert(e.target.className);
+    }
+
 };
 
 
-
-$(function(){$('#cont')
+$(function(){$('body')
         .bind("dragover", function(){
             this.className = 'hover';
             return false;
@@ -81,8 +91,12 @@ $(function(){$('#cont')
         .bind('drop',function(e){
 		var f = new File();
 		f.file_count(e.originalEvent.dataTransfer.files);
+		$('#intro').css('display','none');
 		e.preventDefault();
 		return false;
 
 	});
     });
+
+
+
