@@ -35,7 +35,7 @@ File.prototype = {
 	img.style.position = 'absolute';
         thum.appendChild(img);
         var p = new Hand();
-        p.event(thum);
+        p.event();
 	this.file_read(f,function(c){
 		img.src = c;
 	    });
@@ -67,12 +67,11 @@ File.prototype = {
 var Hand = function(){};
 var x = '';
 var y = '';
-
 var drag = false;
 var elem;
 
 Hand.prototype = {
-    event:function(f){
+    event:function(){
 	addE(document,'mousedown',function(e){
 		drag = true;
 		elem = e.target;
@@ -100,9 +99,8 @@ var reE = function(node,type,listen){
 
 function move(e){
     if(drag){
-	elem.style.left = e.pageX -x +'px';
+	elem.style.left = e.pageX - x +'px';
 	elem.style.top = e.pageY - y +'px';
-	//alert(elem.style.left);
 	e.preventDefault();
     }
     
