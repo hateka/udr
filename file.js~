@@ -16,10 +16,8 @@ File.prototype = {
 	    if(f[i].type.match(image)){
                 check = true;
 		this.add_file(f[i]);
-		//alert('ok');
             }else{
                 check = false;
-		//alert('no');
 		break;
             }
 	}
@@ -34,12 +32,13 @@ File.prototype = {
         var img = new Image();
         img.className = f.name;
 	img.style.margin = '10px';
-	//alert(img.className);
+	img.style.position = 'absolute';
         thum.appendChild(img);
+        var p = new Hand();
+        p.event(thum);
 	this.file_read(f,function(c){
 		img.src = c;
 	    });
-
     },
     file_read:function(f,callback){
         var r = new FileReader();
@@ -63,13 +62,46 @@ File.prototype = {
         r.readAsDataURL(f);
     }
     
-    
-    
+};
+
+var Hand = function(){};
+var offsetX = '';
+var offsetY = '';
+var x = '';
+var y = '';
+var drag = false;
+
+Hand.prototype = {
+    event:function(f){
+	f.addEventListener('mousedown',this.down,false);
+	//f.addEventListener('mousemove',this.move,false);
+	f.addEventListener('mouseup',this.up,false);
+    },
+    down:function(e){
+	offsetX = e.pageX;
+	offsetY = e.pageY;
+	drag = true;
+    },
+    move:function(e){
+	if(drag){
+	e.target.style.left = e.pageX - offsetX+'px';
+	e.target.style.top = e.pageY - offsetY+'px';
+	}
+    },
+    up:function(e){
+	if(drag){
+	    //drag = false;
+
+	e.target.style.left = e.pageX - offsetX+'px';
+	e.target.style.top =  e.pageY - offsetY+'px';
+	//alert(e.target.style.left);
+	}
+    }
+
 };
 
 
-
-$(function(){$('#cont')
+$(function(){$('body')
         .bind("dragover", function(){
             this.className = 'hover';
             return false;
@@ -81,8 +113,12 @@ $(function(){$('#cont')
         .bind('drop',function(e){
 		var f = new File();
 		f.file_count(e.originalEvent.dataTransfer.files);
+		$('#intro').css('display','none');
 		e.preventDefault();
 		return false;
 
 	});
     });
+
+
+

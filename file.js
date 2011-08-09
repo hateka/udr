@@ -16,10 +16,8 @@ File.prototype = {
 	    if(f[i].type.match(image)){
                 check = true;
 		this.add_file(f[i]);
-		//alert('ok');
             }else{
                 check = false;
-		//alert('no');
 		break;
             }
 	}
@@ -34,6 +32,7 @@ File.prototype = {
         var img = new Image();
         img.className = f.name;
 	img.style.margin = '10px';
+	img.style.position = 'absolute';
         thum.appendChild(img);
         var p = new Hand();
         p.event(thum);
@@ -66,18 +65,50 @@ File.prototype = {
 };
 
 var Hand = function(){};
+var offsetX = '';
+var offsetY = '';
+var x = '';
+var y = '';
+var drag = false;
+var elem;
 
 Hand.prototype = {
     event:function(f){
-	//alert(f.style.top);
-	f.addEventListener('mousedown',this.drag,false);
-    },
-    drag:function(e){
-	alert(e.target.className);
+	addE(document,'mousedown',function(e){
+		drag = true;
+		var rect = f.getBoundingClientRect();
+		elem = f;
+		x = e.layerX;
+		y = e.layerY;
+		//alert(x);
+		addE(document,'mousemove',move);
+        });
+	addE(document,'mouseup',function(e){
+		if(drag){
+		    drag = false;
+		    reE(document,'mousemove',move);
+		    var rect = f.getBoundingClientRect();
+		    
+		}
+	});
     }
-
 };
 
+var addE = function(node,type,listen){
+    node.addEventListener(type,listen,false);
+};
+
+var reE = function(node,type,listen){
+    node.removeEventListener(type,listen,false);
+};
+
+function move(e){
+    if(drag){
+	e.target.style.left = e.pageX -x  +'px';
+	e.target.style.top = e.pageY - y +'px';
+    }
+    
+}
 
 $(function(){$('body')
         .bind("dragover", function(){
@@ -94,7 +125,6 @@ $(function(){$('body')
 		$('#intro').css('display','none');
 		e.preventDefault();
 		return false;
-
 	});
     });
 
