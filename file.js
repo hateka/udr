@@ -65,10 +65,9 @@ File.prototype = {
 };
 
 var Hand = function(){};
-var offsetX = '';
-var offsetY = '';
 var x = '';
 var y = '';
+
 var drag = false;
 var elem;
 
@@ -76,19 +75,16 @@ Hand.prototype = {
     event:function(f){
 	addE(document,'mousedown',function(e){
 		drag = true;
-		var rect = f.getBoundingClientRect();
-		elem = f;
+		elem = e.target;
 		x = e.layerX;
 		y = e.layerY;
-		//alert(x);
+         	e.preventDefault();
 		addE(document,'mousemove',move);
         });
 	addE(document,'mouseup',function(e){
 		if(drag){
 		    drag = false;
 		    reE(document,'mousemove',move);
-		    var rect = f.getBoundingClientRect();
-		    
 		}
 	});
     }
@@ -104,8 +100,10 @@ var reE = function(node,type,listen){
 
 function move(e){
     if(drag){
-	e.target.style.left = e.pageX -x  +'px';
-	e.target.style.top = e.pageY - y +'px';
+	elem.style.left = e.pageX -x +'px';
+	elem.style.top = e.pageY - y +'px';
+	//alert(elem.style.left);
+	e.preventDefault();
     }
     
 }
