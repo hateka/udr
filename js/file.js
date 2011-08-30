@@ -1,10 +1,9 @@
 var image = /image.*/;
-
 var File = function(){};
 
 File.prototype = {
     file_count:function(f){
-	if(f.length == 0){
+        if(f.length == 0){
 	    return;
         }else{
 	    this.check_type(f);
@@ -13,12 +12,12 @@ File.prototype = {
     check_type:function(f){
         var check = false;
         for(var i=0;i<f.length;i++){
-	    if(f[i].type.match(image)){
+            if(f[i].type.match(image)){
                 check = true;
-		this.add_file(f[i]);
+                this.add_file(f[i]);
             }else{
                 check = false;
-		break;
+                break;
             }
 	}
         if(!check){
@@ -31,23 +30,23 @@ File.prototype = {
         $('#thum').append(thum);
         var img = new Image();
         img.className = f.name;
-	img.style.margin = '10px';
-	img.style.position = 'absolute';
+        img.style.margin = '10px';
+        img.style.position = 'absolute';
         thum.appendChild(img);
         var p = new Hand();
         p.event();
 	this.file_read(f,function(c){
-		img.src = c;
-	    });
+                	img.src = c;
+	});
     },
     file_read:function(f,callback){
         var r = new FileReader();
 
         r.onload = function(e){
-	    if(callback){
-		callback(r.result);
+            if(callback){
+              callback(r.result);
             }
-	}
+       }
 
         r.onerror = function(){
 	    switch(r.error.code){
@@ -61,7 +60,6 @@ File.prototype = {
 	}
         r.readAsDataURL(f);
     }
-    
 };
 
 var Hand = function(){};
@@ -77,7 +75,7 @@ Hand.prototype = {
 		elem = e.target;
 		x = e.layerX;
 		y = e.layerY;
-         	e.preventDefault();
+		e.preventDefault();
 		addE(document,'mousemove',move);
         });
 	addE(document,'mouseup',function(e){
